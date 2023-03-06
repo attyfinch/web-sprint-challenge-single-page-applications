@@ -33,8 +33,6 @@ const formSchema = yup.object().shape({
     instructions: yup.string().trim()
 })
 
-
-
 const initialOrders = [];
 const initialDisabled = true;
 
@@ -62,19 +60,22 @@ const Form = () => {
         setValues({...values, [name]: valueToUse})   
     }
 
-    useEffect(() => {
-        formSchema.isValid(values).then(valid => setDisabled(!valid))
-      }, [values])
-
     const submit = e => {
         e.preventDefault();
         
         axios.post("https://reqres.in/api/orders", values)
             .then(res => {
                 setOrders([res.data, ...orders])
-                console.log(orders)
             }) .catch(err => console.error(err))                   
     }
+
+    useEffect(() => {
+        formSchema.isValid(values).then(valid => setDisabled(!valid))
+      }, [values])
+
+      useEffect(() => {
+        console.log(orders)
+      }, [orders])  
 
     return (
         
