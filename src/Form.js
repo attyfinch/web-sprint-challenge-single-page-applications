@@ -66,13 +66,16 @@ const Form = () => {
         axios.post("https://reqres.in/api/orders", values)
             .then(res => {
                 setOrders([res.data, ...orders])
-            }) .catch(err => console.error(err))                   
+            }) .catch(err => console.error(err))
+            .finally(() => setValues(initialFormValues))
+                   
     }
 
     useEffect(() => {
         formSchema.isValid(values).then(valid => setDisabled(!valid))
       }, [values])
 
+      // verifies thata form submission data is correctly being added to the orders array
       useEffect(() => {
         console.log(orders)
       }, [orders])  
