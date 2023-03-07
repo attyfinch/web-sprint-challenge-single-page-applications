@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import * as yup from 'yup';
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 const initialFormValues = {
     name: "",
@@ -25,7 +24,7 @@ const initialFormErrors = {
 
 const formSchema = yup.object().shape({
     name: yup.string().trim().required('name must be at least 2 characters').min(2, 'name must be at least 2 characters'),
-    size: yup.string(),
+    size: yup.string().oneOf(['Small','Medium', 'Large', 'Xtra Large'], "Must choose size"),
     pepperoni: yup.boolean(),
     mushrooms: yup.boolean(),
     olives: yup.boolean(),
@@ -38,7 +37,6 @@ const initialDisabled = true;
 
 const Form = () => {
 
-    //  "name must be at least 2 characters"
     //   Fill out #pizza-form, submit #pizza-form with data to https://reqres.in/api/orders (55 ms)
 
     const [values, setValues] = useState(initialFormValues);
@@ -63,19 +61,18 @@ const Form = () => {
     const submit = e => {
         e.preventDefault();
         
-        axios.post("https://reqres.in/api/orders", values)
+        axios.post('https://reqres.in/api/orders', values)
             .then(res => {
                 setOrders([res.data, ...orders])
             }) .catch(err => console.error(err))
-            .finally(() => setValues(initialFormValues))
-                   
+            .finally(() => setValues(initialFormValues))        
     }
 
     useEffect(() => {
         formSchema.isValid(values).then(valid => setDisabled(!valid))
       }, [values])
 
-      // verifies thata form submission data is correctly being added to the orders array
+    //   verifies thata form submission data is correctly being added to the orders array
       useEffect(() => {
         console.log(orders)
       }, [orders])  
@@ -83,10 +80,10 @@ const Form = () => {
     return (
         
         <div>
-            <form id="pizza-form" onSubmit={submit}>
-
-                <label id="name-input"> Name
+            <form onSubmit={submit} id="pizza-form">
+                <label>Name
                     <input
+                    id="name-input"
                     type="text"
                     name="name"
                     value={values.name}
@@ -94,13 +91,13 @@ const Form = () => {
                     />    
                 </label>
                 <br></br>
-                <label id="size-dropdown">Size
+                <label>Size
                     <select name="size" value={values.size} onChange={change} >
-                    <option value="">--choose size--</option>
-                        <option value="Small">Small</option>
-                        <option value="Medium">Medium</option>
-                        <option value="Large">Large</option>
-                        <option value="xtra Large">Xtra Large</option>
+                        <option value="" id="size-dropdown">-choose size-</option>
+                        <option value="Small" id="size-dropdown">Small</option>
+                        <option value="Medium" id="size-dropdown">Medium</option>
+                        <option value="Large" id="size-dropdown">Large</option>
+                        <option value="Xtra Large" id="size-dropdown">Xtra Large</option>
                     </select>
                 </label>
                 <br></br>
@@ -139,8 +136,9 @@ const Form = () => {
                     />
                 </label>
                 <br></br>
-                <label id="special-text">Special Instructions
+                <label>Special Instructions
                     <input
+                    id="special-text"
                     type="text"
                     name="instructions"
                     value={values.instructions}
@@ -149,7 +147,7 @@ const Form = () => {
                 </label>
                 <br></br>
                 
-                <button id="order-button" disabled={disabled}>Submit Order</button>
+                <button id="order-button" disabled={disabled}>Order</button>
 
                 <div>{errors.name}</div>
 
