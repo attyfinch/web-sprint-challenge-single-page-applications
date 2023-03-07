@@ -92,12 +92,12 @@ const Form = () => {
                 </label>
                 <br></br>
                 <label>Size
-                    <select name="size" value={values.size} onChange={change} >
-                        <option value="" id="size-dropdown">-choose size-</option>
-                        <option value="Small" id="size-dropdown">Small</option>
-                        <option value="Medium" id="size-dropdown">Medium</option>
-                        <option value="Large" id="size-dropdown">Large</option>
-                        <option value="Xtra Large" id="size-dropdown">Xtra Large</option>
+                    <select id="size-dropdown" name="size" value={values.size} onChange={change} >
+                        <option value="-choose size-">-choose size-</option>
+                        <option value="Small">Small</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Large">Large</option>
+                        <option value="Xtra Large">Xtra Large</option>
                     </select>
                 </label>
                 <br></br>
